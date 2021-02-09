@@ -43,12 +43,9 @@ pipeline {
 
 	    stage ('Deploy dev') {
 	      steps {
-          withCredentials(bindings:
-            [
-              sshUserPrivateKey(credentialsId: params.insight_day_key, keyFileVariable: 'SSH_KEY_PATH')
-            ]) {
-            sh 'ssh -vvv -i $SSH_KEY_PATH ubuntu@$NGINX_DEV_IP "pwd"'
-            sh "rsync -e \"ssh -o StrictHostKeyChecking=no\" -r $WORKSPACE/sites/ -i \$SSH_KEY_PATH ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/"
+            sshagent(credentials: [params.insight_day_key]) { 
+            sh 'ssh -vvv ubuntu@$NGINX_DEV_IP "pwd"'
+            sh "rsync -e \"ssh -o StrictHostKeyChecking=no\" -r $WORKSPACE/sites/ ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/"
             }
 	       }
       }
