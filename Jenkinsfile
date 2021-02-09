@@ -1,49 +1,24 @@
 pipeline {
-    agent {
-<<<<<<< HEAD
-      	any
-=======
-	any
->>>>>>> First commit initial setup
-    }
+    agent any
     stages {
       stage('Setup parameters') {
         steps {
-<<<<<<< HEAD
           script { 
             properties([
               parameters([
                 string(
-                    defaultValue: '', 
+                    defaultValue: '34.243.190.50', 
                     name: 'NGINX_DEV_IP', 
                     trim: true
                 ),
                 string(
-                    defaultValue: '', 
+                    defaultValue: '34.245.136.66', 
                     name: 'NGINX_PROD_IP', 
                     trim: true
                 ),
                 string(
-                    defaultValue: 'SSH_KEY_VARIABLE', 
+                    defaultValue: 'insight-day-key', 
                     name: 'insight_day_key', 
-=======
-          script {
-            properties([
-              parameters([
-                string(
-                    defaultValue: '',
-                    name: 'NGINX_DEV_IP',
-                    trim: true
-                ),
-                string(
-                    defaultValue: '',
-                    name: 'NGINX_PROD_IP',
-                    trim: true
-                ),
-                string(
-                    defaultValue: 'SSH_KEY_VARIABLE',
-                    name: 'insight_day_key',
->>>>>>> First commit initial setup
                     trim: true
                 )
               ])
@@ -61,7 +36,9 @@ pipeline {
       }
 
       stage('Code Checkout') {
-        checkout scm
+        steps {
+          checkout scm
+        }
       }
 
 	    stage ('Deploy dev') {
@@ -69,15 +46,17 @@ pipeline {
           withCredentials(bindings:
             [
               sshUserPrivateKey(credentialsId: params.insight_day_key, keyFileVariable: 'SSH_KEY_PATH')
-            ])
-          sh "rsync -r $WORKSPACE/sites/ -i $SSH_KEY_PATH ubuntu@$NGINX_IP:/usr/share/nginx/html/"
+            ]) {
+            sh 'ssh -vvv -i $SSH_KEY_PATH ubuntu@$NGINX_DEV_IP "pwd"'
+            sh "rsync -e \"ssh -o StrictHostKeyChecking=no\" -r $WORKSPACE/sites/ -i \$SSH_KEY_PATH ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/"
+            }
 	       }
       }
 
       stage ('Test') {
 	      steps {
           sh """
-            RESPONSE_CODE=$(curl -o /dev/null -s -w "%{http_code}\n" https://$NGINGX_DEV_IP)
+            RESPONSE_CODE=\$(curl -o /dev/null -s -w "%{http_code}\n" https://$NGINGX_DEV_IP)
             if [[ "\$RESPONSE_CODE" != 200 ]]; then
                 echo curl unssuccessful.  Expected response code 200, got "\$RESPONSE_CODE"
             fi
@@ -90,9 +69,10 @@ pipeline {
           withCredentials(bindings:
             [
               sshUserPrivateKey(credentialsId: params.insight_day_key, keyFileVariable: 'SSH_KEY_PATH'),
-            ])
-          sh "rsync -r $WORKSPACE/sites/ -i $SSH_KEY_PATH ubuntu@$NGINX_IP:/usr/share/nginx/html/"
-	       }
-	     }
+            ]) {
+            sh "rsync -e \"ssh -o StrictHostKeyChecking=no\" -r $WORKSPACE/sites/ -i \$SSH_KEY_PATH ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/"
+          }
+	      }
+	    }
     }
 }
