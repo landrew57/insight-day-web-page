@@ -43,19 +43,20 @@ pipeline {
 
 	    stage ('Deploy dev') {
 	      steps {
-            sshagent(credentials: [params.insight_day_key]) { 
-            sh 'ssh -vvv ubuntu@$NGINX_DEV_IP "pwd"'
-            sh "rsync -e \"ssh -o StrictHostKeyChecking=no\" -r $WORKSPACE/sites/ ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/"
-            }
-	       }
+          sshagent(credentials: [params.insight_day_key]) {
+            sh """
+            rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/ ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/
+            """
+	        }
+        }
       }
 
       stage ('Test') {
 	      steps {
           sh """
-            RESPONSE_CODE=\$(curl -o /dev/null -s -w "%{http_code}\n" https://$NGINGX_DEV_IP)
-            if [[ "\$RESPONSE_CODE" != 200 ]]; then
-                echo curl unssuccessful.  Expected response code 200, got "\$RESPONSE_CODE"
+            RESPONSE_CODE=\$(curl -o /dev/null -s -w "%{http_code}\n" http://$NGINX_DEV_IP)
+            if [ "\$RESPONSE_CODE" != 200 ]; then
+                echo curl unsuccessful.  Expected response code 200, got "\$RESPONSE_CODE"
             fi
             """
 	       }
@@ -63,12 +64,11 @@ pipeline {
 
 	    stage ('Deploy prod') {
 	      steps {
-          withCredentials(bindings:
-            [
-              sshUserPrivateKey(credentialsId: params.insight_day_key, keyFileVariable: 'SSH_KEY_PATH'),
-            ]) {
-            sh "rsync -e \"ssh -o StrictHostKeyChecking=no\" -r $WORKSPACE/sites/ -i \$SSH_KEY_PATH ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/"
-          }
+          sshagent(credentials: [params.insight_day_key]) {
+            sh """
+            rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/ ubuntu@$NGINX_PROD_IP:/usr/share/nginx/html/
+            """
+	        }
 	      }
 	    }
     }
