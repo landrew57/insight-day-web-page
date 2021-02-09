@@ -70,7 +70,7 @@ pipeline {
               sshUserPrivateKey(credentialsId: params.insight_day_key, keyFileVariable: 'SSH_KEY_PATH'),
             ])
 		      
-          sh "rsync -r "$WORKSPACE/sites/" -i $SSH_KEY_PATH ubuntu@$NGINX_IP:/usr/share/nginx/html/"
+          sh "rsync -r $WORKSPACE/sites/ -i $SSH_KEY_PATH ubuntu@$NGINX_IP:/usr/share/nginx/html/"
 	       }
 	     }
     }
