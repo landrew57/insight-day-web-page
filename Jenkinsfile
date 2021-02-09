@@ -1,10 +1,15 @@
 pipeline {
     agent {
+<<<<<<< HEAD
       	any
+=======
+	any
+>>>>>>> First commit initial setup
     }
     stages {
       stage('Setup parameters') {
         steps {
+<<<<<<< HEAD
           script { 
             properties([
               parameters([
@@ -21,6 +26,24 @@ pipeline {
                 string(
                     defaultValue: 'SSH_KEY_VARIABLE', 
                     name: 'insight_day_key', 
+=======
+          script {
+            properties([
+              parameters([
+                string(
+                    defaultValue: '',
+                    name: 'NGINX_DEV_IP',
+                    trim: true
+                ),
+                string(
+                    defaultValue: '',
+                    name: 'NGINX_PROD_IP',
+                    trim: true
+                ),
+                string(
+                    defaultValue: 'SSH_KEY_VARIABLE',
+                    name: 'insight_day_key',
+>>>>>>> First commit initial setup
                     trim: true
                 )
               ])
@@ -47,8 +70,7 @@ pipeline {
             [
               sshUserPrivateKey(credentialsId: params.insight_day_key, keyFileVariable: 'SSH_KEY_PATH')
             ])
-		      
-          sh "rsync -r "$WORKSPACE/sites/" -i $SSH_KEY_PATH ubuntu@$NGINX_IP:/usr/share/nginx/html/"
+          sh "rsync -r $WORKSPACE/sites/ -i $SSH_KEY_PATH ubuntu@$NGINX_IP:/usr/share/nginx/html/"
 	       }
       }
 
@@ -69,7 +91,6 @@ pipeline {
             [
               sshUserPrivateKey(credentialsId: params.insight_day_key, keyFileVariable: 'SSH_KEY_PATH'),
             ])
-		      
           sh "rsync -r $WORKSPACE/sites/ -i $SSH_KEY_PATH ubuntu@$NGINX_IP:/usr/share/nginx/html/"
 	       }
 	     }
