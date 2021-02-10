@@ -1,31 +1,13 @@
 pipeline {
     agent any
+    
+    environment {
+        NGINX_DEV_IP = '34.245.91.68'
+        NGINX_PROD_IP = '52.210.134.244'
+        insight_day_key_name = 'insight-day-key'
+    }
+
     stages {
-      stage('Setup parameters') {
-        steps {
-          script { 
-            properties([
-              parameters([
-                string(
-                    defaultValue: '34.243.190.50', 
-                    name: 'NGINX_DEV_IP', 
-                    trim: true
-                ),
-                string(
-                    defaultValue: '34.245.136.66', 
-                    name: 'NGINX_PROD_IP', 
-                    trim: true
-                ),
-                string(
-                    defaultValue: 'insight-day-key', 
-                    name: 'insight_day_key', 
-                    trim: true
-                )
-              ])
-            ])
-          }
-        }
-      }
       stage('Cleanup Workspace') {
         steps {
               cleanWs()
@@ -43,9 +25,9 @@ pipeline {
 
 	    stage ('Deploy dev') {
 	      steps {
-          sshagent(credentials: [params.insight_day_key]) {
+          sshagent(credentials: [env.insight_day_key]) {
             sh """
-            rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/ ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/
+            rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday/ ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/insightday
             """
 	        }
         }
@@ -64,9 +46,9 @@ pipeline {
 
 	    stage ('Deploy prod') {
 	      steps {
-          sshagent(credentials: [params.insight_day_key]) {
+          sshagent(credentials: [env.insight_day_key]) {
             sh """
-            rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/ ubuntu@$NGINX_PROD_IP:/usr/share/nginx/html/
+            rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday/ ubuntu@$NGINX_PROD_IP:/usr/share/nginx/html/insightday
             """
 	        }
 	      }
