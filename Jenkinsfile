@@ -7,12 +7,12 @@ pipeline {
             properties([
               parameters([
                 string(
-                    defaultValue: '34.243.190.50', 
+                    defaultValue: '34.245.91.68', 
                     name: 'NGINX_DEV_IP', 
                     trim: true
                 ),
                 string(
-                    defaultValue: '34.245.136.66', 
+                    defaultValue: '52.210.134.244', 
                     name: 'NGINX_PROD_IP', 
                     trim: true
                 ),
@@ -45,7 +45,7 @@ pipeline {
 	      steps {
           sshagent(credentials: [params.insight_day_key]) {
             sh """
-            rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/ ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/
+            rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/insightday
             """
 	        }
         }
@@ -66,7 +66,7 @@ pipeline {
 	      steps {
           sshagent(credentials: [params.insight_day_key]) {
             sh """
-            rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/ ubuntu@$NGINX_PROD_IP:/usr/share/nginx/html/
+            rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday ubuntu@$NGINX_PROD_IP:/usr/share/nginx/html/insightday
             """
 	        }
 	      }
