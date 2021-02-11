@@ -48,7 +48,7 @@ pipeline {
     	    steps {
                 sh """
                 RESPONSE_CODE=\$(curl -o /dev/null -s -w "%{http_code}\n" http://$NGINX_DEV_IP)
-                if [ "\$RESPONSE_CODE" != 201 ]; then
+                if [ "\$RESPONSE_CODE" != 200 ]; then
                     echo curl unsuccessful.  Expected response code 200, got "\$RESPONSE_CODE"
                     exit 2
                 fi
