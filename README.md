@@ -17,7 +17,7 @@ Commit - A commit, or "revision", is an individual change to a file (or set of f
 
 Build - Quite a generic term.  In today's context, this is an attempt to take the code from a particular branch and run it through the pipeline.
 
-Jenkinsfile - This controls what the pipeline does.  To fix failing builds, we will need to resolve something in this file.
+[Jenkinsfile](./Jenkinsfile) - This controls what the pipeline does.  To fix failing builds, we will need to resolve something in this file.
 
 ### IP addresses
 
