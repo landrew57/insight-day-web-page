@@ -36,7 +36,7 @@ pipeline {
     	    steps {
                 sshagent(credentials: ['insight-day-key']) {
                     sh """
-                    rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday/ ubuntu@$NGINX_IP:/usr/share/nginx/html/insightday
+                    rsync -e "ssh -o StrictHostKeyChecking=no" -r NGINX_PROD_IP = '52.210.134.244'WORKSPACE/sites/insightday/ ubuntu@$NGINX_IP:/usr/share/nginx/html/insightday
                     """
     	        }
             }
