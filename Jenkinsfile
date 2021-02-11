@@ -37,35 +37,20 @@ pipeline {
     	    steps {
                 sshagent(credentials: [environment.insight_day_key]) {
                     sh """
-                    rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday/ ubuntu@$NGINX_IP:/usr/share/nginx/html/insightday
+                    rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday/ ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/insightday
                     """
     	        }
             }
         }
     
-        // Test that the server is still working.  What is happening here?
-        // curl is a command line tool to make requests to urls
-        stage ('Test dev') {
-    	    steps {
-                sh """
-                RESPONSE_CODE=\$(curl -o /dev/null -s -w "%{http_code}\n" http://$NGINX_DEV_IP)
-                if [ "\$RESPONSE_CODE" != 201 ]; then
-                    echo curl unsuccessful.  Expected response code 200, got "\$RESPONSE_CODE"
-                    exit 2
-                fi
-                """
     	    }
         }
     
     	stage ('Deploy prod') {
-            when {
-                // We only want to deploy code to production that has been merged to the main branch
-                branch 'main'
-            }
-    	    steps {
-                sshagent(credentials: ['insight-day-key']) {
+            steps {
+                sshagent(credentials: [environment.insight_day_key]) {
                     sh """
-                    rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday/ ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/insightday
+                    rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday/ ubuntu@$NGINX_PROD_IP:/usr/share/nginx/html/insightday
                     """
     	        }
     	    }
