@@ -4,6 +4,7 @@ pipeline {
     environment {
         NGINX_DEV_IP = '34.245.91.68'
         NGINX_PROD_IP = '52.210.134.244'
+        insight_day_key_name = 'insight-day-key'
     }
 
     stages {
@@ -34,7 +35,7 @@ pipeline {
         // Where does the NGINX_DEV_IP environment varialbe come from?
         stage ('Deploy dev') {
     	    steps {
-                sshagent(credentials: ['insight-day-key']) {
+                sshagent(credentials: [environment.insight_day_key]) {
                     sh """
                     rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday/ ubuntu@$NGINX_IP:/usr/share/nginx/html/insightday
                     """
