@@ -75,8 +75,7 @@ tool, but we are just using it to serve static content.  Some of the configurati
 
 If the url you go to looks like `http://34.245.91.68/insightday/something`, nginx will search the root directory
 (defined above as `/usr/share/nginx/html/`) for a file matching the path `insightday/something` or `insightday/something.html` and return it. 
-If it can't find a file, it will return a 404.  
-See two different responses by going to http://34.245.91.68/insightday/something
+If it can't find a file, it will return a 404.  See two different responses by going to http://34.245.91.68/insightday/something
 and http://34.245.91.68/insightday/example.
 
 The second link works because of the example file in this repository: [./sites/insightday/example.html](./sites/insightday/example.html).
