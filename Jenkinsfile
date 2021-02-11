@@ -2,8 +2,9 @@ pipeline {
     agent any
     
     environment {
-        NGINX_DEV_IP = '34.245.91.68'
-        NGINX_PROD_IP = '52.210.134.244'
+        
+        $NGINX_DEV_IP = '34.245.91.68'
+        $NGINX_PROD_IP = '52.210.134.244'
     }
 
     stages {
