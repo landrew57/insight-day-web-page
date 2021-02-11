@@ -35,7 +35,7 @@ pipeline {
         // Where does the NGINX_DEV_IP environment varialbe come from?
         stage ('Deploy dev') {
     	    steps {
-                sshagent(credentials: [environment.insight_day_key]) {
+                sshagent(credentials: [env.insight_day_key]) {
                     sh """
                     rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday/ ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/insightday
                     """
@@ -48,7 +48,7 @@ pipeline {
     
     	stage ('Deploy prod') {
             steps {
-                sshagent(credentials: [environment.insight_day_key]) {
+                sshagent(credentials: [env.insight_day_key]) {
                     sh """
                     rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday/ ubuntu@$NGINX_PROD_IP:/usr/share/nginx/html/insightday
                     """
