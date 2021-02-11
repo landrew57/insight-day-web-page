@@ -49,7 +49,8 @@ pipeline {
                 sh """
                 RESPONSE_CODE=\$(curl -o /dev/null -s -w "%{http_code}\n" http://$NGINX_DEV_IP)
                 if [ "\$RESPONSE_CODE" != 200 ]; then
-                    echo curl unsuccessful.  Expected response code 200, got "\$RESPONSE_CODE" 
+                    echo curl unsuccessful.  Expected response code 200, got "\$RESPONSE_CODE"
+                    exit 2
                 fi    
                 """
     	    }
@@ -58,7 +59,7 @@ pipeline {
     	stage ('Deploy prod') {
             when {
                 // We only want to deploy code to production that has been merged to the main branch
-                branch 'JamesR'
+                branch 'main'
             }
     	    steps {
                 sshagent(credentials: ['insight-day-key']) {
