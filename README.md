@@ -25,7 +25,7 @@ Build - Quite a generic term.  In today's context, this is an attempt to take th
 |------------|------------|
 | nginx dev  | http://34.245.91.68 |
 | nginx prod | http://52.210.134.244 |
-| jenkins    | http://54.75.49.109:8080 |
+| jenkins    | http://18.203.254.107:8080 |
 
 
 
@@ -41,7 +41,7 @@ You can name it anything you like, but your name or your initials will do.
 
 #### Fix the build
 
-- Go to http://54.75.49.109:8080/job/insight_day/job/main/
+- Go to http://18.203.254.107:8080/job/insight_day/job/main/
 
 You will see some failing builds for the main branch.  From the logs (click either the red boxes in the middle
 or the little globes on the left hand side) try to find out what has gone wrong.
@@ -76,7 +76,7 @@ tool, but we are just using it to serve static content.  Some of the configurati
 If the url you go to looks like `http://34.245.91.68/insightday/something`, nginx will search the root directory
 (defined above as `/usr/share/nginx/html/`) for a file matching the path `insightday/something` or `insightday/something.html` and return it. 
 If it can't find a file, it will return a 404.  See two different responses by going to http://34.245.91.68/insightday/something
-and http://34.245.91.68/insightday/example.
+and http://18.203.254.107:8080/insightday/example.
 
 The second link works because of the example file in this repository: [./sites/insightday/example.html](./sites/insightday/example.html).
 - Try to create your own page telling us some things you've learned today. 
