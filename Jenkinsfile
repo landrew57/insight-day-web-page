@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        NGINX_IP = '34.245.91.68'
+        NGINX_DEV_IP = '34.245.91.68'
         NGINX_PROD_IP = '52.210.134.244'
     }
 
@@ -36,7 +36,7 @@ pipeline {
     	    steps {
                 sshagent(credentials: ['insight-day-key']) {
                     sh """
-                    rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday/ ubuntu@$NGINX_IP:/usr/share/nginx/html/insightday
+                    rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday/ ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/insightday
                     """
     	        }
             }
@@ -47,7 +47,7 @@ pipeline {
         stage ('Test dev') {
     	    steps {
                 sh """
-                RESPONSE_CODE=\$(curl -o /dev/null -s -w "%{http_code}\n" http://$NGINX_IP)
+                RESPONSE_CODE=\$(curl -o /dev/null -s -w "%{http_code}\n" http://$NGINX_DEV_IP)
                 if [ "\$RESPONSE_CODE" != 200 ]; then
                     echo curl unsuccessful.  Expected response code 200, got "\$RESPONSE_CODE"
                     exit 2
