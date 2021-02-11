@@ -35,16 +35,31 @@
   </head>
   <body>
     <div class="container">
-      <h1>What I Learnt From Today</h1>
+      <h1 id="#main-text">What I Learnt From Today</h1>
       <p>DevOps is a set of practices that combine software development and IT operations. DevOps aims to shorten the systems development life cycle</p>
     </div> 
-    <h3>What DevOps Engineerings Do?</h3>
     <div class="list-container">
+      <h3>What DevOps Engineerings Do?</h3>
       <ul>
         <li>Automation</li>
         <li>Project Management</li>
         <li>Improving Performance</li>
       </ul>
     </div>
+    <script>
+      let text = document.getElementById("main-text");
+      let timer = window.setInterval(changeColor(), 5000);
+      let counter = 0;
+      
+      function changeColor() {
+          if (counter = 0) {
+             text.style.color = "red";
+             counter = 1;
+          } else {
+             text.style.color = "white";
+             counter = 0;
+          }
+      }
+    </script>
   </body>
 </html>
