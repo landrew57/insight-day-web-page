@@ -58,7 +58,7 @@ pipeline {
     	stage ('Deploy prod') {
             when {
                 // We only want to deploy code to production that has been merged to the main branch
-                branch 'main'
+                branch 'JamesR'
             }
     	    steps {
                 sshagent(credentials: ['insight-day-key']) {
