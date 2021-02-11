@@ -13,7 +13,7 @@ is broken.  No new code can reach production if the pipeline isn't working.
 
 ### Terms
 
-Commmit - A commit, or "revision", is an individual change to a file (or set of files). It's like when you save a file, except Git allows you to keep record of what changes were made when and by who. Commits usually contain a commit message which is a brief description of what changes were made.
+Commit - A commit, or "revision", is an individual change to a file (or set of files). It's like when you save a file, except Git allows you to keep record of what changes were made when and by who. Commits usually contain a commit message which is a brief description of what changes were made.
 
 Build - Quite a generic term.  In today's context, this is an attempt to take the code from a particular branch and run it through the pipeline.
 
