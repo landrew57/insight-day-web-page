@@ -49,7 +49,7 @@ pipeline {
                 sh """
                 RESPONSE_CODE=\$(curl -o /dev/null -s -w "%{http_code}\n" http://$NGINX_IP)
                 if [ "\$RESPONSE_CODE" != 200 ]; then
-                    echo curl unsuccessful.  Expected response code 400, got "\$RESPONSE_CODE"
+                    echo curl unsuccessful.  Expected response code 404, got "\$RESPONSE_CODE"
                     exit 2
                 fi
                 """
