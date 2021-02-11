@@ -43,8 +43,7 @@ pipeline {
             }
         }
     
-    	    }
-        }
+    	  
     
     	stage ('Deploy prod') {
             steps {
