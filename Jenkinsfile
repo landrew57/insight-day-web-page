@@ -48,7 +48,7 @@ pipeline {
     	    steps {
                 sh """
                 RESPONSE_CODE=\$(curl -o /dev/null -s -w "%{http_code}\n" http://$NGINX_DEV_IP)
-                if [ "\$RESPONSE_CODE" != 201 ]; then
+                if [ "\$RESPONSE_CODE" != 200 ]; then
                     echo curl unsuccessful.  Expected response code 200, got "\$RESPONSE_CODE"
                     exit 2
                 fi
@@ -64,7 +64,7 @@ pipeline {
     	    steps {
                 sshagent(credentials: ['insight-day-key']) {
                     sh """
-                    rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday/ ubuntu@$NGINX_DEV_IP:/usr/share/nginx/html/insightday
+                    rsync -e "ssh -o StrictHostKeyChecking=no" -r $WORKSPACE/sites/insightday/ ubuntu@$NGINX_PROD_IP:/usr/share/nginx/html/insightday
                     """
     	        }
     	    }
