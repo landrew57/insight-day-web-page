@@ -49,16 +49,13 @@
     <script>
       let text = document.getElementById("main-text");
       let timer = window.setInterval(changeColor(), 5000);
-      let counter = 0;
       
       function changeColor() {
-          if (counter = 0) {
-             text.style.color = "red";
-             counter = 1;
-          } else {
-             text.style.color = "white";
-             counter = 0;
-          }
+          text.style.color = "red";
+          setTimeout(() => {
+            text.style.color = "white";
+          }, 2000)
+           
       }
     </script>
   </body>
